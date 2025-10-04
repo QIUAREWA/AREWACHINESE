@@ -419,6 +419,65 @@
             .admin-controls {
                 flex-direction: column;
             }
+            
+            .vocab-grid, .sentence-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        .vocab-grid, .sentence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .vocab-card, .sentence-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px 15px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .vocab-card:hover, .sentence-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+        }
+        
+        .vocab-card:active, .sentence-card:active {
+            transform: translateY(0);
+        }
+        
+        .vocab-card.playing, .sentence-card.playing {
+            background-color: #e8f0fe;
+            box-shadow: 0 0 0 2px #1a73e8;
+        }
+        
+        .vocab-pinyin, .sentence-pinyin {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: #1a73e8;
+            font-weight: bold;
+        }
+        
+        .vocab-character, .sentence-character {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .vocab-meaning, .sentence-meaning {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .vocab-translation, .sentence-translation {
+            font-size: 0.9rem;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 12px;
         }
     </style>
 </head>
@@ -426,7 +485,7 @@
     <div class="container">
         <header>
             <h1>HSK一级汉语拼音学习</h1>
-            <div class="subtitle">拼音学习与拼读练习 - 完整韵母版</div>
+            <div class="subtitle">拼音学习与拼读练习 - 完整版</div>
         </header>
         
         <div class="instructions">
@@ -439,6 +498,12 @@
             </div>
             <div class="tab" data-tab="practice">
                 <i class="fas fa-book-reader"></i> 拼读练习
+            </div>
+            <div class="tab" data-tab="vocab">
+                <i class="fas fa-book"></i> 生词学习
+            </div>
+            <div class="tab" data-tab="sentences">
+                <i class="fas fa-comment"></i> 句子练习
             </div>
             <div class="tab" data-tab="tones">
                 <i class="fas fa-music"></i> 声调说明
@@ -533,6 +598,42 @@
             </div>
         </div>
         
+        <div class="tab-content" id="vocab">
+            <h2 class="section-title">
+                <i class="fas fa-book"></i> HSK一级生词 (HSK Level 1 Vocabulary)
+            </h2>
+            <div class="vocab-grid" id="vocab-container">
+                <!-- 生词将通过JavaScript动态生成 -->
+            </div>
+            
+            <div class="audio-controls">
+                <button class="audio-btn" id="play-all-vocab">
+                    <i class="fas fa-play-circle"></i> 播放所有生词
+                </button>
+                <button class="audio-btn" id="shuffle-vocab">
+                    <i class="fas fa-random"></i> 随机排序
+                </button>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="sentences">
+            <h2 class="section-title">
+                <i class="fas fa-comment"></i> HSK一级句子 (HSK Level 1 Sentences)
+            </h2>
+            <div class="sentence-grid" id="sentence-container">
+                <!-- 句子将通过JavaScript动态生成 -->
+            </div>
+            
+            <div class="audio-controls">
+                <button class="audio-btn" id="play-all-sentences">
+                    <i class="fas fa-play-circle"></i> 播放所有句子
+                </button>
+                <button class="audio-btn" id="shuffle-sentences">
+                    <i class="fas fa-random"></i> 随机排序
+                </button>
+            </div>
+        </div>
+        
         <div class="tab-content" id="tones">
             <h2 class="section-title">
                 <i class="fas fa-music"></i> 汉语声调 (Chinese Tones)
@@ -589,6 +690,8 @@
                     <option value="nasalFinals">鼻韵母声调</option>
                     <option value="specialFinals">特殊韵母声调</option>
                     <option value="practice">练习词汇</option>
+                    <option value="vocab">生词</option>
+                    <option value="sentences">句子</option>
                 </select>
                 
                 <select class="admin-select" id="audio-item">
@@ -661,6 +764,7 @@
                 { symbol: "in", name: "鼻韵母" },
                 { symbol: "un", name: "鼻韵母" },
                 { symbol: "ün", name: "鼻韵母" },
+                { symbol: "üan", name: "鼻韵母" },
                 { symbol: "ian", name: "鼻韵母" },
                 { symbol: "uan", name: "鼻韵母" },
                 { symbol: "ang", name: "鼻韵母" },
@@ -696,6 +800,7 @@
                 { symbol: "in", name: "鼻韵母", tones: ["īn", "ín", "ǐn", "ìn"] },
                 { symbol: "un", name: "鼻韵母", tones: ["ūn", "ún", "ǔn", "ùn"] },
                 { symbol: "ün", name: "鼻韵母", tones: ["ǖn", "ǘn", "ǚn", "ǜn"] },
+                { symbol: "üan", name: "鼻韵母", tones: ["ǖan", "ǘan", "ǚan", "ǜan"] },
                 { symbol: "ian", name: "鼻韵母", tones: ["iān", "ián", "iǎn", "iàn"] },
                 { symbol: "uan", name: "鼻韵母", tones: ["uān", "uán", "uǎn", "uàn"] },
                 { symbol: "ang", name: "鼻韵母", tones: ["āng", "áng", "ǎng", "àng"] },
@@ -763,6 +868,114 @@
             { pinyin: "mǎ", character: "马", meaning: "horse", tone: 3 },
             { pinyin: "mà", character: "骂", meaning: "scold", tone: 4 },
             { pinyin: "ma", character: "吗", meaning: "question", tone: 0 }
+        ];
+
+        // HSK一级生词数据 (50个)
+        const vocabData = [
+            { pinyin: "nǐ", character: "你", meaning: "you" },
+            { pinyin: "hǎo", character: "好", meaning: "good" },
+            { pinyin: "zài", character: "在", meaning: "at/in" },
+            { pinyin: "shì", character: "是", meaning: "to be" },
+            { pinyin: "wǒ", character: "我", meaning: "I/me" },
+            { pinyin: "tā", character: "他", meaning: "he/him" },
+            { pinyin: "tā", character: "她", meaning: "she/her" },
+            { pinyin: "men", character: "们", meaning: "plural marker" },
+            { pinyin: "bù", character: "不", meaning: "no/not" },
+            { pinyin: "yǒu", character: "有", meaning: "to have" },
+            { pinyin: "yī", character: "一", meaning: "one" },
+            { pinyin: "èr", character: "二", meaning: "two" },
+            { pinyin: "sān", character: "三", meaning: "three" },
+            { pinyin: "sì", character: "四", meaning: "four" },
+            { pinyin: "wǔ", character: "五", meaning: "five" },
+            { pinyin: "liù", character: "六", meaning: "six" },
+            { pinyin: "qī", character: "七", meaning: "seven" },
+            { pinyin: "bā", character: "八", meaning: "eight" },
+            { pinyin: "jiǔ", character: "九", meaning: "nine" },
+            { pinyin: "shí", character: "十", meaning: "ten" },
+            { pinyin: "rén", character: "人", meaning: "person" },
+            { pinyin: "kǒu", character: "口", meaning: "mouth" },
+            { pinyin: "shǒu", character: "手", meaning: "hand" },
+            { pinyin: "zú", character: "足", meaning: "foot" },
+            { pinyin: "mù", character: "目", meaning: "eye" },
+            { pinyin: "ěr", character: "耳", meaning: "ear" },
+            { pinyin: "kǒu", character: "口", meaning: "mouth" },
+            { pinyin: "shé", character: "舌", meaning: "tongue" },
+            { pinyin: "yá", character: "牙", meaning: "tooth" },
+            { pinyin: "tóu", character: "头", meaning: "head" },
+            { pinyin: "xīn", character: "心", meaning: "heart" },
+            { pinyin: "rì", character: "日", meaning: "sun/day" },
+            { pinyin: "yuè", character: "月", meaning: "moon/month" },
+            { pinyin: "shuǐ", character: "水", meaning: "water" },
+            { pinyin: "huǒ", character: "火", meaning: "fire" },
+            { pinyin: "mù", character: "木", meaning: "wood" },
+            { pinyin: "jīn", character: "金", meaning: "metal" },
+            { pinyin: "tǔ", character: "土", meaning: "earth" },
+            { pinyin: "shàng", character: "上", meaning: "up/above" },
+            { pinyin: "xià", character: "下", meaning: "down/below" },
+            { pinyin: "zuǒ", character: "左", meaning: "left" },
+            { pinyin: "yòu", character: "右", meaning: "right" },
+            { pinyin: "dà", character: "大", meaning: "big" },
+            { pinyin: "xiǎo", character: "小", meaning: "small" },
+            { pinyin: "duō", character: "多", meaning: "many" },
+            { pinyin: "shǎo", character: "少", meaning: "few" },
+            { pinyin: "cháng", character: "长", meaning: "long" },
+            { pinyin: "duǎn", character: "短", meaning: "short" },
+            { pinyin: "gāo", character: "高", meaning: "tall/high" },
+            { pinyin: "dī", character: "低", meaning: "low" }
+        ];
+
+        // HSK一级句子数据 (50个)
+        const sentenceData = [
+            { pinyin: "Nǐ hǎo", character: "你好", meaning: "Hello" },
+            { pinyin: "Zàijiàn", character: "再见", meaning: "Goodbye" },
+            { pinyin: "Xièxie", character: "谢谢", meaning: "Thank you" },
+            { pinyin: "Bù kèqì", character: "不客气", meaning: "You're welcome" },
+            { pinyin: "Duìbuqǐ", character: "对不起", meaning: "Sorry" },
+            { pinyin: "Méi guānxi", character: "没关系", meaning: "It's okay" },
+            { pinyin: "Wǒ jiào...", character: "我叫...", meaning: "My name is..." },
+            { pinyin: "Nǐ jiào shénme míngzi?", character: "你叫什么名字？", meaning: "What's your name?" },
+            { pinyin: "Wǒ shì Zhōngguó rén", character: "我是中国人", meaning: "I am Chinese" },
+            { pinyin: "Nǐ shì nǎ guó rén?", character: "你是哪国人？", meaning: "Where are you from?" },
+            { pinyin: "Wǒ xǐhuan hē chá", character: "我喜欢喝茶", meaning: "I like drinking tea" },
+            { pinyin: "Wǒ bù xǐhuan hē kāfēi", character: "我不喜欢喝咖啡", meaning: "I don't like drinking coffee" },
+            { pinyin: "Jīntiān tiānqì hěn hǎo", character: "今天天气很好", meaning: "The weather is good today" },
+            { pinyin: "Míngtiān huì xià yǔ ma?", character: "明天会下雨吗？", meaning: "Will it rain tomorrow?" },
+            { pinyin: "Wǒ qù xuéxiào", character: "我去学校", meaning: "I go to school" },
+            { pinyin: "Tā zài jiā", character: "他在家", meaning: "He is at home" },
+            { pinyin: "Wǒmen shì péngyǒu", character: "我们是朋友", meaning: "We are friends" },
+            { pinyin: "Zhè shì wǒ de shū", character: "这是我的书", meaning: "This is my book" },
+            { pinyin: "Nà shì shénme?", character: "那是什么？", meaning: "What is that?" },
+            { pinyin: "Zhè shì duōshǎo qián?", character: "这是多少钱？", meaning: "How much is this?" },
+            { pinyin: "Wǒ yào yī bēi shuǐ", character: "我要一杯水", meaning: "I want a glass of water" },
+            { pinyin: "Nǐ xiǎng chī shénme?", character: "你想吃什么？", meaning: "What do you want to eat?" },
+            { pinyin: "Wǒ hěn è", character: "我很饿", meaning: "I'm very hungry" },
+            { pinyin: "Wǒ bù è", character: "我不饿", meaning: "I'm not hungry" },
+            { pinyin: "Xiànzài jǐ diǎn?", character: "现在几点？", meaning: "What time is it now?" },
+            { pinyin: "Xiànzài shì bā diǎn", character: "现在是八点", meaning: "It's eight o'clock now" },
+            { pinyin: "Wǒ qī diǎn qǐchuáng", character: "我七点起床", meaning: "I get up at seven" },
+            { pinyin: "Wǒ shí diǎn shuìjiào", character: "我十点睡觉", meaning: "I go to bed at ten" },
+            { pinyin: "Nǐ huì shuō Yīngyǔ ma?", character: "你会说英语吗？", meaning: "Can you speak English?" },
+            { pinyin: "Wǒ huì shuō yīdiǎn Hànyǔ", character: "我会说一点汉语", meaning: "I can speak a little Chinese" },
+            { pinyin: "Qǐng màn yīdiǎn shuō", character: "请慢一点说", meaning: "Please speak a little slower" },
+            { pinyin: "Wǒ bù míngbái", character: "我不明白", meaning: "I don't understand" },
+            { pinyin: "Qǐng zài shuō yī biàn", character: "请再说一遍", meaning: "Please say it again" },
+            { pinyin: "Zhège zěnme shuō?", character: "这个怎么说？", meaning: "How do you say this?" },
+            { pinyin: "Wǒ xué Hànyǔ", character: "我学汉语", meaning: "I study Chinese" },
+            { pinyin: "Nǐ xué Hànyǔ duō jiǔ le?", character: "你学汉语多久了？", meaning: "How long have you been studying Chinese?" },
+            { pinyin: "Wǒ xué le yī nián Hànyǔ", character: "我学了一年汉语", meaning: "I've studied Chinese for one year" },
+            { pinyin: "Wǒ de jiā zài Běijīng", character: "我的家在北京", meaning: "My home is in Beijing" },
+            { pinyin: "Nǐ qùguò Shànghǎi ma?", character: "你去过上海吗？", meaning: "Have you been to Shanghai?" },
+            { pinyin: "Wǒ méi qùguò Shànghǎi", character: "我没去过上海", meaning: "I haven't been to Shanghai" },
+            { pinyin: "Wǒ xiǎng qù Zhōngguó lǚyóu", character: "我想去中国旅游", meaning: "I want to travel to China" },
+            { pinyin: "Zhège hěn hǎochī", character: "这个很好吃", meaning: "This is very delicious" },
+            { pinyin: "Wǒ hěn xǐhuan zhège", character: "我很喜欢这个", meaning: "I like this very much" },
+            { pinyin: "Nǐ xǐhuan shénme yùndòng?", character: "你喜欢什么运动？", meaning: "What sports do you like?" },
+            { pinyin: "Wǒ xǐhuan dǎ lánqiú", character: "我喜欢打篮球", meaning: "I like playing basketball" },
+            { pinyin: "Wǒ bù xǐhuan kàn diànshì", character: "我不喜欢看电视", meaning: "I don't like watching TV" },
+            { pinyin: "Wǒmen yīqǐ qù ba", character: "我们一起去吧", meaning: "Let's go together" },
+            { pinyin: "Míngtiān jiàn", character: "明天见", meaning: "See you tomorrow" },
+            { pinyin: "Zhù nǐ shēngrì kuàilè", character: "祝你生日快乐", meaning: "Happy birthday to you" },
+            { pinyin: "Xīnnián kuàilè", character: "新年快乐", meaning: "Happy New Year" }
         ];
 
         // 存储上传的音频
@@ -955,6 +1168,52 @@
             });
         }
 
+        // 生成生词卡片
+        function generateVocabCards() {
+            const vocabContainer = document.getElementById('vocab-container');
+            vocabData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.setAttribute('data-audio', item.pinyin);
+                card.innerHTML = `
+                    <div class="vocab-pinyin">${item.pinyin}</div>
+                    <div class="vocab-character">${item.character}</div>
+                    <div class="vocab-meaning">${item.meaning}</div>
+                    <div class="card-controls">
+                        <div class="play-btn">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => playPhonetic(item.pinyin, card));
+                vocabContainer.appendChild(card);
+            });
+        }
+
+        // 生成句子卡片
+        function generateSentenceCards() {
+            const sentenceContainer = document.getElementById('sentence-container');
+            sentenceData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'sentence-card';
+                // 将句子中的空格替换为下划线，避免音频ID问题
+                const audioId = item.pinyin.replace(/ /g, '_');
+                card.setAttribute('data-audio', audioId);
+                card.innerHTML = `
+                    <div class="sentence-pinyin">${item.pinyin}</div>
+                    <div class="sentence-character">${item.character}</div>
+                    <div class="sentence-meaning">${item.meaning}</div>
+                    <div class="card-controls">
+                        <div class="play-btn">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => playPhonetic(audioId, card));
+                sentenceContainer.appendChild(card);
+            });
+        }
+
         // 生成声调示例卡片
         function generateToneExamples() {
             const tonesExamplesContainer = document.getElementById('tones-examples-container');
@@ -1020,8 +1279,8 @@
                     // 韵母
                     'a': 330, 'o': 349, 'e': 370, 'i': 392, 'u': 415, 'v': 440,
                     'ai': 330, 'ei': 349, 'ui': 370, 'ao': 392, 'ou': 415, 'iu': 440, 'ie': 466, 've': 494,
-                    'er': 330, 'an': 349, 'en': 370, 'in': 392, 'un': 415, 'vn': 440, 'ian': 466, 'uan': 494,
-                    'ang': 523, 'eng': 554, 'ing': 587, 'ong': 622, 'iang': 659, 'uang': 698, 'ueng': 740, 'iong': 784,
+                    'er': 330, 'an': 349, 'en': 370, 'in': 392, 'un': 415, 'vn': 440, 'van': 466, 'ian': 494, 'uan': 523,
+                    'ang': 554, 'eng': 587, 'ing': 622, 'ong': 659, 'iang': 698, 'uang': 740, 'ueng': 784, 'iong': 830,
                     
                     // 单韵母 - 第一声
                     'a1': 330, 'o1': 349, 'e1': 370, 'i1': 392, 'u1': 415, 'v1': 440,
@@ -1042,17 +1301,17 @@
                     'ai4': 440, 'ei4': 466, 'ui4': 494, 'ao4': 523, 'ou4': 554, 'iu4': 587, 'ie4': 622, 've4': 659,
                     
                     // 鼻韵母 - 第一声
-                    'an1': 330, 'en1': 349, 'in1': 370, 'un1': 392, 'vn1': 415, 'ian1': 440, 'uan1': 466,
-                    'ang1': 494, 'eng1': 523, 'ing1': 554, 'ong1': 587,
+                    'an1': 330, 'en1': 349, 'in1': 370, 'un1': 392, 'vn1': 415, 'van1': 440, 'ian1': 466, 'uan1': 494,
+                    'ang1': 523, 'eng1': 554, 'ing1': 587, 'ong1': 622,
                     // 鼻韵母 - 第二声
-                    'an2': 370, 'en2': 392, 'in2': 415, 'un2': 440, 'vn2': 466, 'ian2': 494, 'uan2': 523,
-                    'ang2': 554, 'eng2': 587, 'ing2': 622, 'ong2': 659,
+                    'an2': 370, 'en2': 392, 'in2': 415, 'un2': 440, 'vn2': 466, 'van2': 494, 'ian2': 523, 'uan2': 554,
+                    'ang2': 587, 'eng2': 622, 'ing2': 659, 'ong2': 698,
                     // 鼻韵母 - 第三声
-                    'an3': 294, 'en3': 311, 'in3': 330, 'un3': 349, 'vn3': 370, 'ian3': 392, 'uan3': 415,
-                    'ang3': 440, 'eng3': 466, 'ing3': 494, 'ong3': 523,
+                    'an3': 294, 'en3': 311, 'in3': 330, 'un3': 349, 'vn3': 370, 'van3': 392, 'ian3': 415, 'uan3': 440,
+                    'ang3': 466, 'eng3': 494, 'ing3': 523, 'ong3': 554,
                     // 鼻韵母 - 第四声
-                    'an4': 440, 'en4': 466, 'in4': 494, 'un4': 523, 'vn4': 554, 'ian4': 587, 'uan4': 622,
-                    'ang4': 659, 'eng4': 698, 'ing4': 740, 'ong4': 784,
+                    'an4': 440, 'en4': 466, 'in4': 494, 'un4': 523, 'vn4': 554, 'van4': 587, 'ian4': 622, 'uan4': 659,
+                    'ang4': 698, 'eng4': 740, 'ing4': 784, 'ong4': 830,
                     
                     // 特殊韵母 - 第一声
                     'er1': 330, 'iang1': 349, 'uang1': 370, 'ueng1': 392, 'iong1': 415,
@@ -1071,7 +1330,29 @@
                     'má': 370, 'mǎ': 294, 'mà': 440, 'ma': 330,
                     'bá': 370, 'bǎ': 294, 'bà': 440,
                     'yī': 330, 'yí': 370, 'yǐ': 294, 'yì': 440,
-                    'wū': 330, 'wú': 370, 'wǔ': 294, 'wù': 440
+                    'wū': 330, 'wú': 370, 'wǔ': 294, 'wù': 440,
+                    
+                    // 生词
+                    'zài': 330, 'shì': 349, 'wǒ': 370, 'men': 392, 'bù': 415,
+                    'yǒu': 440, 'yī': 466, 'èr': 494, 'sān': 523, 'sì': 554,
+                    'wǔ': 587, 'liù': 622, 'qī': 659, 'bā': 698, 'jiǔ': 740,
+                    'shí': 784, 'kǒu': 830, 'shǒu': 330, 'zú': 349, 'mù': 370,
+                    'ěr': 392, 'shé': 415, 'yá': 440, 'tóu': 466, 'xīn': 494,
+                    'rì': 523, 'yuè': 554, 'shàng': 587, 'xià': 622, 'zuǒ': 659,
+                    'yòu': 698, 'dà': 740, 'xiǎo': 784, 'duō': 830, 'shǎo': 330,
+                    'cháng': 349, 'duǎn': 370, 'gāo': 392, 'dī': 415,
+                    
+                    // 句子 - 使用下划线代替空格
+                    'Nǐ_hǎo': 330, 'Zàijiàn': 349, 'Xièxie': 370, 'Bù_kèqì': 392, 'Duìbuqǐ': 415,
+                    'Méi_guānxi': 440, 'Wǒ_jiào...': 466, 'Nǐ_jiào_shénme_míngzi?': 494, 'Wǒ_shì_Zhōngguó_rén': 523, 'Nǐ_shì_nǎ_guó_rén?': 554,
+                    'Wǒ_xǐhuan_hē_chá': 587, 'Wǒ_bù_xǐhuan_hē_kāfēi': 622, 'Jīntiān_tiānqì_hěn_hǎo': 659, 'Míngtiān_huì_xià_yǔ_ma?': 698, 'Wǒ_qù_xuéxiào': 740,
+                    'Tā_zài_jiā': 784, 'Wǒmen_shì_péngyǒu': 830, 'Zhè_shì_wǒ_de_shū': 330, 'Nà_shì_shénme?': 349, 'Zhè_shì_duōshǎo_qián?': 370,
+                    'Wǒ_yào_yī_bēi_shuǐ': 392, 'Nǐ_xiǎng_chī_shénme?': 415, 'Wǒ_hěn_è': 440, 'Wǒ_bù_è': 466, 'Xiànzài_jǐ_diǎn?': 494,
+                    'Xiànzài_shì_bā_diǎn': 523, 'Wǒ_qī_diǎn_qǐchuáng': 554, 'Wǒ_shí_diǎn_shuìjiào': 587, 'Nǐ_huì_shuō_Yīngyǔ_ma?': 622, 'Wǒ_huì_shuō_yīdiǎn_Hànyǔ': 659,
+                    'Qǐng_màn_yīdiǎn_shuō': 698, 'Wǒ_bù_míngbái': 740, 'Qǐng_zài_shuō_yī_biàn': 784, 'Zhège_zěnme_shuō?': 830, 'Wǒ_xué_Hànyǔ': 330,
+                    'Nǐ_xué_Hànyǔ_duō_jiǔ_le?': 349, 'Wǒ_xué_le_yī_nián_Hànyǔ': 370, 'Wǒ_de_jiā_zài_Běijīng': 392, 'Nǐ_qùguò_Shànghǎi_ma?': 415, 'Wǒ_méi_qùguò_Shànghǎi': 440,
+                    'Wǒ_xiǎng_qù_Zhōngguó_lǚyóu': 466, 'Zhège_hěn_hǎochī': 494, 'Wǒ_hěn_xǐhuan_zhège': 523, 'Nǐ_xǐhuan_shénme_yùndòng?': 554, 'Wǒ_xǐhuan_dǎ_lánqiú': 587,
+                    'Wǒ_bù_xǐhuan_kàn_diànshì': 622, 'Wǒmen_yīqǐ_qù_ba': 659, 'Míngtiān_jiàn': 698, 'Zhù_nǐ_shēngrì_kuàilè': 740, 'Xīnnián_kuàilè': 784
                 };
                 
                 if (frequencyMap[symbol]) {
@@ -1132,6 +1413,18 @@
             playSequence(practice, 0);
         }
         
+        // 播放所有生词
+        function playAllVocab() {
+            const vocab = document.querySelectorAll('#vocab-container .vocab-card');
+            playSequence(vocab, 0);
+        }
+        
+        // 播放所有句子
+        function playAllSentences() {
+            const sentences = document.querySelectorAll('#sentence-container .sentence-card');
+            playSequence(sentences, 0);
+        }
+        
         // 顺序播放序列
         function playSequence(elements, index) {
             if (index >= elements.length) return;
@@ -1149,6 +1442,30 @@
         // 随机排序练习
         function shufflePractice() {
             const container = document.getElementById('practice-container');
+            const cards = Array.from(container.children);
+            
+            // 随机排序
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                container.appendChild(container.children[j]);
+            }
+        }
+        
+        // 随机排序生词
+        function shuffleVocab() {
+            const container = document.getElementById('vocab-container');
+            const cards = Array.from(container.children);
+            
+            // 随机排序
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                container.appendChild(container.children[j]);
+            }
+        }
+        
+        // 随机排序句子
+        function shuffleSentences() {
+            const container = document.getElementById('sentence-container');
             const cards = Array.from(container.children);
             
             // 随机排序
@@ -1223,6 +1540,22 @@
                 practiceData.forEach(item => {
                     const option = document.createElement('option');
                     option.value = item.pinyin;
+                    option.textContent = `${item.pinyin} - ${item.character} (${item.meaning})`;
+                    itemSelect.appendChild(option);
+                });
+            } else if (type === 'vocab') {
+                vocabData.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.pinyin;
+                    option.textContent = `${item.pinyin} - ${item.character} (${item.meaning})`;
+                    itemSelect.appendChild(option);
+                });
+            } else if (type === 'sentences') {
+                sentenceData.forEach(item => {
+                    // 将句子中的空格替换为下划线，避免音频ID问题
+                    const audioId = item.pinyin.replace(/ /g, '_');
+                    const option = document.createElement('option');
+                    option.value = audioId;
                     option.textContent = `${item.pinyin} - ${item.character} (${item.meaning})`;
                     itemSelect.appendChild(option);
                 });
@@ -1305,6 +1638,8 @@
             generatePhoneticsCards();
             generatePracticeCards();
             generateTonePracticeCards();
+            generateVocabCards();
+            generateSentenceCards();
             generateToneExamples();
             setupTabs();
             
@@ -1314,7 +1649,11 @@
             document.getElementById('play-all-simple-tones').addEventListener('click', playAllSimpleTones);
             document.getElementById('play-all-compound-tones').addEventListener('click', playAllCompoundTones);
             document.getElementById('play-all-practice').addEventListener('click', playAllPractice);
+            document.getElementById('play-all-vocab').addEventListener('click', playAllVocab);
+            document.getElementById('play-all-sentences').addEventListener('click', playAllSentences);
             document.getElementById('shuffle-practice').addEventListener('click', shufflePractice);
+            document.getElementById('shuffle-vocab').addEventListener('click', shuffleVocab);
+            document.getElementById('shuffle-sentences').addEventListener('click', shuffleSentences);
             
             // 添加上传相关事件
             document.getElementById('audio-type').addEventListener('change', updateAudioItems);
